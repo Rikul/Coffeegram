@@ -4,7 +4,8 @@
 .idea/
 .kotlin
 .DS_Store
-/build
+**/build/
+**/bin/
 /captures
 .externalNativeBuild
 .cxx
@@ -28,3 +29,5 @@ cmp-iosApp/iosApp.xcodeproj/*
 *.jks.*
 app/src/main/play
 /gcm-diagnose.log
+CLAUDE.md
+IMPROVEMENTS.md
