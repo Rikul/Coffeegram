@@ -87,6 +87,7 @@ kotlin {
             implementation(libs.koin.compose)
 
             implementation(libs.coil.compose)
+            implementation(libs.kotlinx.serialization.json)
         }
         val notWasm by getting {
             dependencies {
