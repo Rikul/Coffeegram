@@ -28,6 +28,7 @@ android {
         versionName = "1.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
     }
 
     signingConfigs {
@@ -75,6 +76,7 @@ android {
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
 
     testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
         unitTests {
             isIncludeAndroidResources = true
         }
@@ -150,6 +152,7 @@ dependencies {
     testRuntimeOnly(libs.kotlin.test.junit)
 
     androidTestImplementation(libs.compose.uiTestJunit4)
+    androidTestUtil("androidx.test:orchestrator:1.5.0")
     debugImplementation(libs.compose.uiTooling)
     debugImplementation(libs.compose.uiTestManifest)
 }
