@@ -32,10 +32,13 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = rootProject.file("download.jks")
-            storePassword = KeyHelper.getValue(KeyHelper.KEY_STORE_PASS)
-            keyAlias = KeyHelper.getValue(KeyHelper.KEY_ALIAS)
-            keyPassword = KeyHelper.getValue(KeyHelper.KEY_PASS)
+            val keystoreFile = rootProject.file("download.jks")
+            if (keystoreFile.exists()) {
+                storeFile = keystoreFile
+                storePassword = KeyHelper.getValue(KeyHelper.KEY_STORE_PASS)
+                keyAlias = KeyHelper.getValue(KeyHelper.KEY_ALIAS)
+                keyPassword = KeyHelper.getValue(KeyHelper.KEY_PASS)
+            }
         }
     }
 
@@ -46,7 +49,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            val keystoreFile = rootProject.file("download.jks")
+            signingConfig = if (keystoreFile.exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
     compileOptions {
