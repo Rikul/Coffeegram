@@ -79,6 +79,7 @@ ktor-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-material3 = "androidx.compose.material3:material3:1.4.0" # https://developer.android.com/jetpack/androidx/releases/compose-material3
 compose-uiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-uiTestManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
 compose-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-icons-core = "androidx.compose.material:material-icons-core:1.7.8"
 material-icons-core = "org.jetbrains.compose.material:material-icons-core:1.7.3"

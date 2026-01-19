@@ -140,6 +140,10 @@ dependencies {
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.test.annotations)
     testRuntimeOnly(libs.kotlin.test.junit)
+
+    androidTestImplementation(libs.compose.uiTestJunit4)
+    debugImplementation(libs.compose.uiTooling)
+    debugImplementation(libs.compose.uiTestManifest)
 }
 
 protobuf {
