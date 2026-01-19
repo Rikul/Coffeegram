@@ -16,6 +16,7 @@ import ru.beryukhov.coffeegram.data.CoffeeTypes.Irish
 import ru.beryukhov.coffeegram.data.CoffeeTypes.Latte
 import ru.beryukhov.coffeegram.data.CoffeeTypes.Macchiato
 import ru.beryukhov.coffeegram.data.CoffeeTypes.Mocha
+import ru.beryukhov.coffeegram.data.CoffeeTypes
 import ru.beryukhov.coffeegram.data.DayCoffee
 import ru.beryukhov.coffeegram.data.withEmpty
 import ru.beryukhov.coffeegram.model.DaysCoffeesState
@@ -26,6 +27,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class DataMappingTest {
+
+    private val resolveDrink: (String) -> CoffeeType = { key ->
+        CoffeeTypes.entries.find { it.dbKey == key } ?: Cappuccino
+    }
 
     private val exampleDaysCoffeesState = DaysCoffeesState(
         mapOf(
@@ -69,13 +74,13 @@ class DataMappingTest {
 
     @Test
     fun toListAndBack() {
-        val actual: DaysCoffeesState = exampleDaysCoffeesState.coffees.toDaysCoffeesList().toState()
+        val actual: DaysCoffeesState = exampleDaysCoffeesState.coffees.toDaysCoffeesList().toState(resolveDrink)
         assertEquals(exampleDaysCoffeesState, actual)
     }
 
     @Test
     fun toStateAndBack() {
-        val actual: List<DbDayCoffee> = exampleDbDayCoffeeList.toState().coffees.toDaysCoffeesList()
+        val actual: List<DbDayCoffee> = exampleDbDayCoffeeList.toState(resolveDrink).coffees.toDaysCoffeesList()
         assertEquals(exampleDbDayCoffeeList, actual)
     }
 

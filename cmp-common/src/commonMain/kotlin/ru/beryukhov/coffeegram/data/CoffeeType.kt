@@ -22,6 +22,7 @@ interface CoffeeType {
     val localizedName: PrintableText
     val icon: Picture
     val dbKey: String // non-localizable name for data storage
+    val price: Int? get() = null
 }
 
 enum class CoffeeTypes(
@@ -46,6 +47,15 @@ enum class CoffeeTypes(
 
     override val dbKey: String = this.name
 }
+
+
+data class UserCoffeeType(
+    override val dbKey: String,
+    override val localizedName: PrintableText,
+    override val icon: Picture,
+    override val price: Int? = null,
+    val iconKey: String = "Cappuccino" // Default to fallback
+) : CoffeeType
 
 data class CoffeeTypeWithCount(
     val coffee: CoffeeType,

@@ -16,6 +16,7 @@ import ru.beryukhov.coffeegram.model.DaysCoffeesState
 import ru.beryukhov.coffeegram.model.DaysCoffeesStore
 import ru.beryukhov.coffeegram.model.NavigationIntent
 import ru.beryukhov.coffeegram.model.NavigationStore
+import ru.beryukhov.coffeegram.model.DrinksStore
 import ru.beryukhov.date_time_utils.nowLD
 
 interface CoffeeListViewModel {
@@ -50,13 +51,15 @@ val localDateStub: LocalDate = nowLD()
 
 class CoffeeListViewModelImpl(
     private val daysCoffeesStore: DaysCoffeesStore,
-    private val navigationStore: NavigationStore
+    private val navigationStore: NavigationStore,
+    private val drinksStore: DrinksStore
 ) : ViewModel(), CoffeeListViewModel {
     @Composable
     override fun getDayCoffeesWithEmpty(localDate: LocalDate): PersistentList<CoffeeTypeWithCount> {
         val dayCoffeeState: DaysCoffeesState by daysCoffeesStore.state.collectAsState()
+        val drinksState by drinksStore.state.collectAsState()
         val dayCoffee = dayCoffeeState.coffees[localDate] ?: DayCoffee()
-        return dayCoffee.coffeeCountMap.withEmpty().toPersistentList()
+        return dayCoffee.coffeeCountMap.withEmpty(drinksState.drinks).toPersistentList()
     }
 
     override fun decrementCoffee(

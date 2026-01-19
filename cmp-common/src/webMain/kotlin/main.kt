@@ -6,16 +6,20 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 import org.koin.dsl.module
+import repository.DrinksRepository
 import repository.InMemoryCoffeeRepository
+import repository.InMemoryDrinksRepository
 import ru.beryukhov.coffeegram.components.DefaultRootComponent
 import ru.beryukhov.coffeegram.model.DaysCoffeesStore
 import ru.beryukhov.coffeegram.model.DaysCoffeesStoreImpl
 import ru.beryukhov.coffeegram.model.ThemeState
 import ru.beryukhov.coffeegram.model.ThemeStore
 import ru.beryukhov.coffeegram.repository.CoffeeStorage
+import ru.beryukhov.coffeegram.repository.DrinksDbStorage
 import ru.beryukhov.coffeegram.repository.ThemeInMemoryStorage
 import ru.beryukhov.coffeegram.screens.RootScreen
 import ru.beryukhov.coffeegram.store_lib.Storage
+import ru.beryukhov.coffeegram.model.DrinksStore
 
 private val appModule = module {
     single<Storage<ThemeState>> {
@@ -24,9 +28,11 @@ private val appModule = module {
     single {
         ThemeStore(get())
     }
+    single<DrinksRepository> { InMemoryDrinksRepository() }
     single<DaysCoffeesStore> { DaysCoffeesStoreImpl(coffeeStorage = get()) }
-    single { CoffeeStorage(repository = InMemoryCoffeeRepository()) }
- }
+    single { DrinksStore(DrinksDbStorage(repository = get())) }
+    single { CoffeeStorage(repository = InMemoryCoffeeRepository(), drinksRepository = get()) }
+}
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {

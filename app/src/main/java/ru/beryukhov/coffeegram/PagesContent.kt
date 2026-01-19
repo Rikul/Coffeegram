@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import io.ktor.util.reflect.instanceOf
 import org.koin.compose.koinInject
 import ru.beryukhov.coffeegram.app_ui.CoffeegramTheme
+import ru.beryukhov.coffeegram.model.NavigationIntent
 import ru.beryukhov.coffeegram.model.NavigationState
 import ru.beryukhov.coffeegram.model.NavigationStore
 import ru.beryukhov.coffeegram.model.Text
@@ -44,6 +45,8 @@ import ru.beryukhov.coffeegram.pages.StatsAppBar
 import ru.beryukhov.coffeegram.pages.StatsPage
 import ru.beryukhov.coffeegram.pages.TableAppBar
 import ru.beryukhov.coffeegram.pages.TablePage
+import ru.beryukhov.coffeegram.pages.ManageDrinksPage
+import ru.beryukhov.coffeegram.pages.DrinkEditorPage
 import ru.beryukhov.date_time_utils.nowYM
 import ru.beryukhov.date_time_utils.toTotalMonths
 
@@ -97,6 +100,9 @@ fun PagesContent(
                     is NavigationState.SettingsPage -> SettingsAppBar()
 
                     is NavigationState.MapPage -> MapAppBar()
+                    is NavigationState.ManageDrinksPage -> Unit
+                    is NavigationState.AddDrinkPage -> Unit
+                    is NavigationState.EditDrinkPage -> Unit
                 }
             },
             snackbarHost = {
@@ -145,7 +151,25 @@ fun PagesContent(
                         themeStore = koinInject(),
                         snackbarHostState = snackbarHostState,
                         startWearableActivity = startWearableActivity,
+                        navigateToManageDrinks = { navigationStore.newIntent(NavigationIntent.ToManageDrinksPage) }
                     )
+
+                    is NavigationState.ManageDrinksPage -> ManageDrinksPage(
+                        navigationStore = navigationStore,
+                        drinksStore = koinInject()
+                    )
+
+                    is NavigationState.AddDrinkPage -> DrinkEditorPage(
+                        navigationStore = navigationStore,
+                        drinksStore = koinInject()
+                    )
+
+                    is NavigationState.EditDrinkPage -> DrinkEditorPage(
+                        navigationStore = navigationStore,
+                        drinksStore = koinInject(),
+                        drinkId = currentNavigationState.drinkId
+                    )
+
 
                     is NavigationState.MapPage -> MapPage()
                 }

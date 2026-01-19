@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -67,7 +68,9 @@ fun ColumnScope.SettingsPage(
     themeStore: ThemeStore,
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
-    startWearableActivity: () -> Unit = {}
+
+    startWearableActivity: () -> Unit = {},
+    navigateToManageDrinks: () -> Unit = {}
 ) {
     Column(modifier = modifier.weight(1f)) {
         Text(
@@ -128,6 +131,13 @@ fun ColumnScope.SettingsPage(
             },
             stringResource(R.string.app_theme_summer)
         )
+        HorizontalDivider()
+        Button(
+            onClick = navigateToManageDrinks,
+            modifier = Modifier.padding(16.dp).align(Alignment.CenterHorizontally)
+        ) {
+            Text("Manage Drinks")
+        }
         HorizontalDivider()
         if (BuildConfig.DEBUG) {
             Button(onClick = { startWearableActivity() }, modifier = Modifier.padding(16.dp)) {

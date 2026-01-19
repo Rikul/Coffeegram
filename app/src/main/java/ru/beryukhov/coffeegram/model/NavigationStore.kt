@@ -28,6 +28,9 @@ class NavigationStore(val yearMonth: YearMonth = nowYM()) : StoreImpl<Navigation
             NavigationIntent.ToStatsPage -> NavigationState.StatsPage
             NavigationIntent.ToSettingsPage -> NavigationState.SettingsPage
             NavigationIntent.ToMapPage -> NavigationState.MapPage
+            NavigationIntent.ToManageDrinksPage -> NavigationState.ManageDrinksPage
+            NavigationIntent.ToAddDrinkPage -> NavigationState.AddDrinkPage
+            is NavigationIntent.ToEditDrinkPage -> NavigationState.EditDrinkPage(intent.drinkId)
         }
     }
 
@@ -44,6 +47,9 @@ sealed interface NavigationIntent {
     data object ToStatsPage : NavigationIntent
     data object ToSettingsPage : NavigationIntent
     data object ToMapPage : NavigationIntent
+    data object ToManageDrinksPage : NavigationIntent
+    data object ToAddDrinkPage : NavigationIntent
+    data class ToEditDrinkPage(val drinkId: String) : NavigationIntent
 }
 
 sealed interface NavigationState {
@@ -52,6 +58,9 @@ sealed interface NavigationState {
         MapPage -> "MapScreen"
         StatsPage -> "StatsScreen"
         SettingsPage -> "SettingsScreen"
+        ManageDrinksPage -> "ManageDrinksScreen"
+        AddDrinkPage -> "AddDrinkScreen"
+        is EditDrinkPage -> "EditDrinkScreen"
         is TablePage -> "TableScreen"
     }
 
@@ -60,6 +69,9 @@ sealed interface NavigationState {
     data object StatsPage : NavigationState
     data object SettingsPage : NavigationState
     data object MapPage : NavigationState
+    data object ManageDrinksPage : NavigationState
+    data object AddDrinkPage : NavigationState
+    data class EditDrinkPage(val drinkId: String) : NavigationState
     companion object {
         const val NAVIGATION_STATE_KEY = "NavigationState"
         const val TODAYS_COFFEE_LIST = "TodaysCoffeeList"

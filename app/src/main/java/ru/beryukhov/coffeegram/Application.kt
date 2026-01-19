@@ -29,6 +29,10 @@ import ru.beryukhov.coffeegram.store_lib.Storage
 import ru.beryukhov.coffeegram.widget.FirstGlanceWidget
 import ru.beryukhov.coffeegram.widget.setWidgetPreview
 import ru.beryukhov.repository.databaseModule
+import ru.beryukhov.coffeegram.model.DrinksStore
+import ru.beryukhov.coffeegram.repository.DrinksDbStorage
+import repository.CoffeeRepository
+import repository.DrinksRepository
 
 class Application : Application() {
 
@@ -37,8 +41,8 @@ class Application : Application() {
         startKoin {
             androidContext(this@Application)
             modules(
-                appModule,
-                databaseModule
+                databaseModule,
+                appModule
             )
         }
         // causes java.lang.IllegalStateException: Reading a state that was created after the snapshot was taken
@@ -64,13 +68,19 @@ internal val appModule = module {
     single {
         ThemeStore(get())
     }
-    single<CoffeeStorage> { CoffeeStorage(get()) }
+    single<CoffeeStorage> {
+        CoffeeStorage(
+            repository = get<CoffeeRepository>(),
+            drinksRepository = get<DrinksRepository>()
+        )
+    }
     single<DaysCoffeesStore> { DaysCoffeesStoreImpl(get()) }
 //        single<DaysCoffeesStore> { LightDaysCoffeesStore() }
     single { NavigationStore() }
-    viewModel { CoffeeListViewModelImpl(daysCoffeesStore = get(), navigationStore = get()) }
+    viewModel { CoffeeListViewModelImpl(daysCoffeesStore = get(), navigationStore = get(), drinksStore = get()) }
     viewModel { TablePageViewModelImpl(daysCoffeesStore = get(), navigationStore = get()) }
     viewModel { StatsPageViewModelImpl(daysCoffeesStore = get()) }
     viewModel { MapPageViewModelImpl() }
     viewModel { AppWidgetViewModelImpl(daysCoffeesStore = get()) }
+    single { DrinksStore(DrinksDbStorage(get<DrinksRepository>())) }
 }

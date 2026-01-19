@@ -10,6 +10,8 @@ import ru.beryukhov.coffeegram.repository.ThemeDataStorePrefStorage
 import ru.beryukhov.coffeegram.repository.datastoreModule
 import ru.beryukhov.coffeegram.store_lib.Storage
 import ru.beryukhov.repository.databaseModule
+import ru.beryukhov.coffeegram.model.DrinksStore
+import ru.beryukhov.coffeegram.repository.DrinksDbStorage
 
 val appModule = module {
     includes(databaseModule)
@@ -22,5 +24,6 @@ val appModule = module {
         ThemeStore(get())
     }
     single<DaysCoffeesStore> { DaysCoffeesStoreImpl(coffeeStorage = get()) }
-    single { CoffeeStorage(repository = get()) }
+    single { DrinksStore(DrinksDbStorage(repository = get())) }
+    single { CoffeeStorage(repository = get(), drinksRepository = get()) }
 }

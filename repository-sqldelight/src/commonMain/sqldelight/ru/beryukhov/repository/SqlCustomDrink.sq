@@ -1,0 +1,17 @@
+createSqlCustomDrinkTable:
+CREATE TABLE IF NOT EXISTS SqlCustomDrink (
+  dbKey TEXT NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  iconKey TEXT NOT NULL,
+  price INTEGER
+);
+
+insertCustomDrink:
+INSERT OR REPLACE INTO SqlCustomDrink(dbKey, name, iconKey, price)
+VALUES (?, ?, ?, ?);
+
+deleteCustomDrink:
+DELETE FROM SqlCustomDrink WHERE dbKey = ?;
+
+selectAllCustomDrinks:
+SELECT * FROM SqlCustomDrink;
