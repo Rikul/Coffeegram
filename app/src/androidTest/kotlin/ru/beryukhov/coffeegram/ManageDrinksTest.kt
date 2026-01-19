@@ -125,8 +125,11 @@ class ManageDrinksTest {
 
         // Enter drink name and save
         composeTestRule.onNodeWithTag("DrinkNameInput").performClick().performTextInput("Test Drink")
-        composeTestRule.onNodeWithText("Save").performClick()
 
+        // Cost should be empty by default
+        composeTestRule.onNodeWithTag("DrinkPriceInput").assertTextContains("")
+
+        composeTestRule.onNodeWithText("Save").performClick()
         composeTestRule.waitForIdle()
 
         // Verify that new drink appears in the list
